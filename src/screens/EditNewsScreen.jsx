@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import axios from 'axios';
 
-const EditNewsScreen = ({ route, navigation, blogData, setBlogData }) => {
+const EditNewsScreen = ({ route, navigation }) => {
   const { blog } = route.params;
   const [title, setTitle] = useState(blog.title);
   const [category, setCategory] = useState(blog.category);
   const [image, setImage] = useState(blog.image);
-  const [date, setDate] = useState(blog.date);
-  const [comments, setComments] = useState(blog.comments);
+  const [content, setContent] = useState(blog.content || '');
+  const API_URL = 'https://683eddac1cd60dca33dd6320.mockapi.io/api/blog';
 
-  const handleUpdate = () => {
-    const updatedNews = { ...blog, title, category, image, date, comments };
-    const updatedData = blogData.map(item => item.id === blog.id ? updatedNews : item);
-    setBlogData(updatedData);
-    navigation.goBack();
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`${API_URL}/${blog.id}`, {
+        title,
+        category,
+        image,
+        content,
+      });
+      navigation.goBack();
+    } catch (err) {
+      console.error('Failed to update news:', err);
+    }
   };
 
   return (
@@ -21,7 +29,7 @@ const EditNewsScreen = ({ route, navigation, blogData, setBlogData }) => {
       <TextInput placeholder="Title" style={styles.input} value={title} onChangeText={setTitle} />
       <TextInput placeholder="Category" style={styles.input} value={category} onChangeText={setCategory} />
       <TextInput placeholder="Image URL" style={styles.input} value={image} onChangeText={setImage} />
-      <TextInput placeholder="Date" style={styles.input} value={date} onChangeText={setDate} />
+      <TextInput placeholder="Content" style={styles.input} value={content} onChangeText={setContent} />
       <Button title="Update News" onPress={handleUpdate} />
     </View>
   );
