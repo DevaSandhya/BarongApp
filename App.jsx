@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   Image,
   ImageBackground,
   TextInput,
-  Pressable,
 } from 'react-native';
 import {
   Receipt21,
@@ -18,6 +17,32 @@ import {
 import { fontType, colors } from './src/theme';
 
 const App = () => {
+  const [blogData, setBlogData] = useState([
+    {
+      category: 'Mengenal Tari Bali',
+      title: 'Tari Wali (Tari Sakral)',
+      date: 'Sep 2, 2023',
+      comments: '99',
+      image:
+        'https://akcdn.detik.net.id/community/media/visual/2022/11/14/tari-baris-tombak_169.png?w=620',
+    },
+    {
+      category: 'Mengenal Tari Bali',
+      title: 'Tari Bebali (Tari Upacara)',
+      date: 'Sep 2, 2023',
+      comments: '67',
+      image: 'https://shorturl.at/DDNAH',
+    },
+    {
+      category: 'Mengenal Tari Bali',
+      title: 'Tari Balih-balihan (Tari Hiburan)',
+      date: 'Sep 2, 2023',
+      comments: '83',
+      image:
+        'https://akcdn.detik.net.id/community/media/visual/2022/10/05/tari-joged-bumbung-2_169.jpeg?w=620',
+    },
+  ]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -35,69 +60,42 @@ const App = () => {
         />
       </View>
 
-      {/* List Category Dihapus */}
-
-      <ListBlog />
+      <ListBlog blogs={blogData} />
     </View>
   );
 };
 
-const ListBlog = () => {
-  const verticalData = [
+const ListBlog = ({ blogs }) => {
+  const horizontalData = [
     {
-      category: 'Mengenal Tari Bali',
-      title: 'Tari Wali (Tari Sakral)',
-      date: 'Sep 2, 2023',
-      comments: '99',
-      image:
-        'https://akcdn.detik.net.id/community/media/visual/2022/11/14/tari-baris-tombak_169.png?w=620',
+      uri: 'https://cdn1.katadata.co.id/media/images/thumb/2020/03/14/2020_03_14-17_42_03_a961e8618b886d62c48aaad80a70c262_960x640_thumb.jpg',
+      title: 'Mengenal Tari Bali',
     },
     {
-      category: 'Mengenal Tari Bali',
-      title: 'Tari Bebali (Tari Upacara)',
-      date: 'Sep 2, 2023',
-      comments: '67',
-      image:
-        'https://shorturl.at/DDNAH',
+      uri: 'https://i.pinimg.com/736x/b5/49/de/b549de91d4d719cba37daa4e80736f65.jpg',
+      title: 'Mengenal Alat Musik Bali',
     },
     {
-      category: 'Mengenal Tari Bali',
-      title: 'Tari Balih-balihan (Tari Hiburan)',
-      date: 'Sep 2, 2023',
-      comments: '83',
-      image:
-        'https://akcdn.detik.net.id/community/media/visual/2022/10/05/tari-joged-bumbung-2_169.jpeg?w=620',
+      uri: 'https://assets.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p3/155/2025/04/12/Tari-Topeng-Tua-1610501928.jpg',
+      title: 'Mengenal Topeng Bali',
     },
   ];
 
   return (
     <ScrollView style={styles.listBlog}>
-      {/* Horizontal Section tetap */}
+      {/* Horizontal Section */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ gap: 15 }}
       >
-        {[
-          {
-            uri: 'https://cdn1.katadata.co.id/media/images/thumb/2020/03/14/2020_03_14-17_42_03_a961e8618b886d62c48aaad80a70c262_960x640_thumb.jpg',
-            title: 'Mengenal Tari Bali',
-          },
-          {
-            uri: 'https://i.pinimg.com/736x/b5/49/de/b549de91d4d719cba37daa4e80736f65.jpg',
-            title: 'Mengenal Alat Musik Bali',
-          },
-          {
-            uri: 'https://assets.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p3/155/2025/04/12/Tari-Topeng-Tua-1610501928.jpg',
-            title: 'Mengenal Topeng Bali',
-          },
-        ].map((item, index) => (
+        {horizontalData.map((item, index) => (
           <View
             key={index}
             style={{
               ...itemHorizontal.cardItem,
               ...(index === 0 && { marginLeft: 24 }),
-              ...(index === 2 && { marginRight: 24 }),
+              ...(index === horizontalData.length - 1 && { marginRight: 24 }),
             }}
           >
             <ImageBackground
@@ -106,18 +104,18 @@ const ListBlog = () => {
               imageStyle={{ borderRadius: 15 }}
               source={{ uri: item.uri }}
             >
-            <View style={itemHorizontal.cardContent}>
-            <View style={itemHorizontal.cardInfo}>
-            <Text style={itemHorizontal.cardTitle}>{item.title}</Text>
-            </View>
-            </View>               
+              <View style={itemHorizontal.cardContent}>
+                <View style={itemHorizontal.cardInfo}>
+                  <Text style={itemHorizontal.cardTitle}>{item.title}</Text>
+                </View>
+              </View>
             </ImageBackground>
           </View>
         ))}
       </ScrollView>
 
-      {/* Vertical Sections */}
-      {verticalData.map((item, index) => (
+      {/* Vertical Blog List */}
+      {blogs.map((item, index) => (
         <View key={index} style={itemVertical.listCard}>
           <View style={itemVertical.cardItem}>
             <Image style={itemVertical.cardImage} source={{ uri: item.image }} />
