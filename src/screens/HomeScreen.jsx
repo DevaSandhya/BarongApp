@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable'; // <-- Import the animation library
 
 const HomeScreen = ({ navigation, blogData }) => {
   return (
@@ -7,17 +8,24 @@ const HomeScreen = ({ navigation, blogData }) => {
       <FlatList
         data={blogData}
         keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate('Detail', { blog: item })}
+        renderItem={({ item, index }) => (
+          <Animatable.View
+            animation="fadeInUp" // Animation type
+            delay={index * 100}  // Staggered appearance
+            duration={600}       // Duration of animation
+            useNativeDriver      // Better performance
           >
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <View>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text>{item.date}</Text>
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('Detail', { blog: item })}
+            >
+              <Image source={{ uri: item.image }} style={styles.image} />
+              <View>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text>{item.date}</Text>
+              </View>
+            </TouchableOpacity>
+          </Animatable.View>
         )}
       />
     </View>
@@ -33,9 +41,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     borderRadius: 10,
     overflow: 'hidden',
+    padding: 10,
+    alignItems: 'center',
   },
   image: { width: 80, height: 80, borderRadius: 10 },
-  title: { fontWeight: 'bold' },
+  title: { fontWeight: 'bold', fontSize: 16, marginBottom: 4 },
 });
 
 export default HomeScreen;
