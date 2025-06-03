@@ -4,12 +4,6 @@ import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react
 const HomeScreen = ({ navigation, blogData }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => navigation.navigate('AddNews')}
-      >
-        <Text style={styles.addButtonText}>+ Add News</Text>
-      </TouchableOpacity>
       <FlatList
         data={blogData}
         keyExtractor={item => item.id.toString()}
@@ -32,17 +26,6 @@ const HomeScreen = ({ navigation, blogData }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
-  addButton: {
-    backgroundColor: 'tomato',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  addButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
   card: {
     flexDirection: 'row',
     marginBottom: 16,
