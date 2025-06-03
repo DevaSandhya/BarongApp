@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAEzBiIgnvv4gZwFHt-AelYl-NhdSj54uc",
+  authDomain: "barongapp-5619b.firebaseapp.com",
+  projectId: "barongapp-5619b",
+  storageBucket: "barongapp-5619b.firebasestorage.app",
+  messagingSenderId: "350220019947",
+  appId: "1:350220019947:android:14fd68ee663ef3b002b6ae"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const EditNewsScreen = ({ route, navigation }) => {
   const { blog } = route.params;
@@ -8,15 +21,15 @@ const EditNewsScreen = ({ route, navigation }) => {
   const [category, setCategory] = useState(blog.category);
   const [image, setImage] = useState(blog.image);
   const [content, setContent] = useState(blog.content || '');
-  const API_URL = 'https://683eddac1cd60dca33dd6320.mockapi.io/api/blog';
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${API_URL}/${blog.id}`, {
+      const blogRef = doc(db, 'blogs', blog.id);
+      await updateDoc(blogRef, {
         title,
         category,
-        image,
         content,
+        image,
       });
       navigation.goBack();
     } catch (err) {

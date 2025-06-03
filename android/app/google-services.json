@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350220019947",
+    "project_id": "barongapp-5619b",
+    "storage_bucket": "barongapp-5619b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350220019947:android:14fd68ee663ef3b002b6ae",
+        "android_client_info": {
+          "package_name": "com.barongapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEzBiIgnvv4gZwFHt-AelYl-NhdSj54uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

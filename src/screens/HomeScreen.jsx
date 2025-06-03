@@ -1,17 +1,33 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAEzBiIgnvv4gZwFHt-AelYl-NhdSj54uc",
+  authDomain: "barongapp-5619b.firebaseapp.com",
+  projectId: "barongapp-5619b",
+  storageBucket: "barongapp-5619b.firebasestorage.app",
+  messagingSenderId: "350220019947",
+  appId: "1:350220019947:android:14fd68ee663ef3b002b6ae"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const HomeScreen = ({ navigation }) => {
   const [blogs, setBlogs] = useState([]);
-  const API_URL = 'https://683eddac1cd60dca33dd6320.mockapi.io/api/blog';
 
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get(API_URL);
-      setBlogs(res.data);
+      const querySnapshot = await getDocs(collection(db, 'blogs'));
+      const blogList = [];
+      querySnapshot.forEach(doc => {
+        blogList.push({ id: doc.id, ...doc.data() });
+      });
+      setBlogs(blogList);
     } catch (err) {
       console.error('Failed to fetch blogs:', err);
     }
