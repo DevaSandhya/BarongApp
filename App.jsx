@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,6 +8,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import DetailScreen from './src/screens/DetailScreen';
 import AddNewsScreen from './src/screens/AddNewsScreen';
 import EditNewsScreen from './src/screens/EditNewsScreen';
+
+import { configureNotifications } from './notifications';  // <-- import here
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +54,10 @@ const App = () => {
       image: 'https://shorturl.at/DDNAH',
     },
   ]);
+
+  useEffect(() => {
+    configureNotifications();
+  }, []);
 
   return (
     <NavigationContainer>

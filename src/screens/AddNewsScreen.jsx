@@ -3,6 +3,8 @@ import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
+import { sendLocalNotification } from '../../notifications';  // Import this
+
 const firebaseConfig = {
   apiKey: "AIzaSyAEzBiIgnvv4gZwFHt-AelYl-NhdSj54uc",
   authDomain: "barongapp-5619b.firebaseapp.com",
@@ -31,6 +33,10 @@ const AddNewsScreen = ({ navigation }) => {
         date: new Date().toDateString(),
         comments: '0',
       });
+
+      // Send notification on successful add
+      sendLocalNotification('BarongApp', `News "${title}" added successfully!`);
+
       navigation.goBack();
     } catch (err) {
       console.error('Failed to add news:', err);
